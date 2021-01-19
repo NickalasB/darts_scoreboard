@@ -34,14 +34,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('Cricket'),
       ),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: const ScoreColumn()),
-          SizedBox(width: 48),
-          Expanded(child: const ScoreColumn()),
-        ],
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(child: const ScoreColumn(playerNumber: 1)),
+            SizedBox(width: 48),
+            Expanded(child: const ScoreColumn(playerNumber: 2)),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {},

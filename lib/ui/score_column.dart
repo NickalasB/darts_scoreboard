@@ -9,7 +9,9 @@ const cricketPoints = [20, 19, 18, 17, 16, 15, 25];
 typedef ScoreCallback = Function(int);
 
 class ScoreColumn extends StatefulWidget {
-  const ScoreColumn();
+  const ScoreColumn({this.playerNumber});
+
+  final int playerNumber;
 
   @override
   _ScoreColumnState createState() => _ScoreColumnState();
@@ -29,7 +31,7 @@ class _ScoreColumnState extends State<ScoreColumn> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const PlayerName(),
+          PlayerName(widget.playerNumber),
           Text(totalScore.toString(),
               style: TextStyle(
                 fontSize: 48,
