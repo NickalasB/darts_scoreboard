@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Dart Scoreboard',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -27,6 +27,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int numberOfPlayers = 0;
+  List<Widget> playerColumns = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,20 +38,73 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('Cricket'),
       ),
       body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            Expanded(child: const ScoreColumn(playerNumber: 1)),
-            SizedBox(width: 48),
-            Expanded(child: const ScoreColumn(playerNumber: 2)),
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: playerColumns,
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: CricketButton(
+                    label: 'ADD PLAYER',
+                    onClick: numberOfPlayers < 4
+                        ? () {
+                            setState(() {
+                              numberOfPlayers++;
+                              playerColumns.add(
+                                Expanded(
+                                  child: ScoreColumn(
+                                      playerNumber: numberOfPlayers),
+                                ),
+                              );
+                            });
+                          }
+                        : null,
+                  ),
+                ),
+                Expanded(
+                  child: CricketButton(
+                    label: 'UNDO',
+                  ),
+                ),
+                Expanded(
+                  child: CricketButton(
+                    label: 'RESET',
+                    onClick: () => setState(() {
+                      playerColumns.clear();
+                      playerColumns.addAll([
+                        Expanded(child: const ScoreColumn(playerNumber: 1)),
+                        Expanded(child: const ScoreColumn(playerNumber: 2)),
+                      ]);
+                      numberOfPlayers = playerColumns.length;
+                    }),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
-        child: Icon(Icons.add),
-      ),
+    );
+  }
+}
+
+class CricketButton extends StatelessWidget {
+  const CricketButton({this.label, this.onClick});
+
+  final String label;
+  final VoidCallback onClick;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlineButton(
+      onPressed: onClick,
+      child: Text(label),
     );
   }
 }
