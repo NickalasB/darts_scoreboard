@@ -39,9 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       backgroundColor: Colors.grey,
-      appBar: AppBar(
-        title: Text('Cricket'),
-      ),
       body: SafeArea(
         child: Column(
           children: [
