@@ -28,11 +28,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int numberOfPlayers = 0;
-  List<Widget> playerColumns = [];
+  int numberOfPlayers = 2;
 
   @override
   Widget build(BuildContext context) {
+    List playerColumns(int playerCount) => List<Widget>.generate(
+          playerCount,
+          (i) => Expanded(child: ScoreColumn(playerNumber: i)),
+        );
+
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
@@ -45,29 +49,20 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: playerColumns,
+                children: playerColumns(numberOfPlayers),
               ),
             ),
             Row(
               children: [
                 Expanded(
-                  child: CricketButton(
-                    label: 'ADD PLAYER',
-                    onClick: numberOfPlayers < 4
-                        ? () {
-                            setState(() {
-                              numberOfPlayers++;
-                              playerColumns.add(
-                                Expanded(
-                                  child: ScoreColumn(
-                                      playerNumber: numberOfPlayers),
-                                ),
-                              );
-                            });
-                          }
-                        : null,
-                  ),
-                ),
+                    child: CricketButton(
+                  label: 'ADD PLAYER',
+                  onClick: numberOfPlayers < 4
+                      ? () {
+                          setState(() => numberOfPlayers++);
+                        }
+                      : null,
+                )),
                 Expanded(
                   child: CricketButton(
                     label: 'UNDO',
@@ -76,14 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: CricketButton(
                     label: 'RESET',
-                    onClick: () => setState(() {
-                      playerColumns.clear();
-                      playerColumns.addAll([
-                        Expanded(child: const ScoreColumn(playerNumber: 1)),
-                        Expanded(child: const ScoreColumn(playerNumber: 2)),
-                      ]);
-                      numberOfPlayers = playerColumns.length;
-                    }),
+                    onClick: () => setState(() => numberOfPlayers = 2),
                   ),
                 ),
               ],
