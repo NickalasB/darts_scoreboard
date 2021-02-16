@@ -28,7 +28,7 @@ class GameData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void thereIsAWinner() {
+  void gameOver() {
     _weHaveAWinner = true;
     notifyListeners();
   }

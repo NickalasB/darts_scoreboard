@@ -50,13 +50,15 @@ class _ScoreColumnState extends State<ScoreColumn> {
   void updateScore(int point) {
     final newScore = widget.player.score + point;
     setState(() => widget.player.setScore(newScore));
-    // TODO(me): change this as it's just for demo purposes
-    if (newScore == 60) {
-      print('We have a winner');
-      GameData.of(context, listen: false).thereIsAWinner();
-    }
   }
 
-  void updateHits({@required int point, @required int hits}) =>
-      widget.player.setHits(point: point, hits: hits);
+  void updateHits({@required int point, @required int hits}) {
+    widget.player.setHits(point: point, hits: hits);
+
+    if (cricketPoints
+            .every((point) => widget.player.hitMap.containsKey(point)) &&
+        widget.player.hitMap.values.every((hitCount) => hitCount == 3)) {
+      GameData.of(context, listen: false).gameOver();
+    }
+  }
 }
