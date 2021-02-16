@@ -29,7 +29,7 @@ class _ScoreColumnState extends State<ScoreColumn> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          PlayerName(widget.player.name),
+          PlayerName(widget.player),
           Text(widget.player.score.toString(),
               style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold)),
           ...cricketPoints.map((p) => AnimatedScoreBox(p, () => updateScore(p)))

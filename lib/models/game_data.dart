@@ -45,7 +45,7 @@ class Player {
     this.score = score;
   }
 
-  void setNem(String score) {
+  void setName(String name) {
     this.name = name;
   }
 
