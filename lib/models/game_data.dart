@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+const cricketPoints = [20, 19, 18, 17, 16, 15, 25];
+
 class GameData extends ChangeNotifier {
   static GameData of(BuildContext context, {bool listen = true}) =>
       Provider.of<GameData>(context, listen: listen);
@@ -40,6 +42,7 @@ class Player {
 
   String name;
   int score;
+  Map<int, int> hitMap = {};
 
   void setScore(int score) {
     this.score = score;
@@ -47,6 +50,10 @@ class Player {
 
   void setName(String name) {
     this.name = name;
+  }
+
+  void setHits({int point, int hits}) {
+    this.hitMap.addEntries([MapEntry(point, hits)]);
   }
 
   @override

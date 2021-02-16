@@ -7,8 +7,6 @@ import 'package:flutter/widgets.dart';
 
 import 'animated_score_box.dart';
 
-const cricketPoints = [20, 19, 18, 17, 16, 15, 25];
-
 class ScoreColumn extends StatefulWidget {
   const ScoreColumn({this.player});
 
@@ -32,7 +30,8 @@ class _ScoreColumnState extends State<ScoreColumn> {
           PlayerName(widget.player),
           Text(widget.player.score.toString(),
               style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold)),
-          ...cricketPoints.map((p) => AnimatedScoreBox(p, () => updateScore(p)))
+          ...cricketPoints.map((p) => AnimatedScoreBox(p, () => updateScore(p),
+              ({point, hitCount}) => updateHits(point: point, hits: hitCount)))
         ],
       ),
     );
@@ -47,4 +46,7 @@ class _ScoreColumnState extends State<ScoreColumn> {
       GameData.of(context, listen: false).thereIsAWinner();
     }
   }
+
+  void updateHits({int point, int hits}) =>
+      widget.player.setHits(point: point, hits: hits);
 }
