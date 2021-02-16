@@ -28,10 +28,20 @@ class _ScoreColumnState extends State<ScoreColumn> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           PlayerName(widget.player),
-          Text(widget.player.score.toString(),
-              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold)),
-          ...cricketPoints.map((p) => AnimatedScoreBox(p, () => updateScore(p),
-              ({point, hitCount}) => updateHits(point: point, hits: hitCount)))
+          Text(
+            widget.player.score.toString(),
+            style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+          ),
+          ...cricketPoints.map(
+            (p) => AnimatedScoreBox(
+              point: p,
+              onScore: () => updateScore(p),
+              onHit: ({point, hitCount}) => updateHits(
+                point: point,
+                hits: hitCount,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -47,6 +57,6 @@ class _ScoreColumnState extends State<ScoreColumn> {
     }
   }
 
-  void updateHits({int point, int hits}) =>
+  void updateHits({@required int point, @required int hits}) =>
       widget.player.setHits(point: point, hits: hits);
 }

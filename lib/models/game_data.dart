@@ -52,7 +52,7 @@ class Player {
     this.name = name;
   }
 
-  void setHits({int point, int hits}) {
+  void setHits({@required int point, @required int hits}) {
     this.hitMap.addEntries([MapEntry(point, hits)]);
   }
 

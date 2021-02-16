@@ -6,11 +6,11 @@ import 'package:flutter/widgets.dart';
 typedef HitCallback = Function({int point, int hitCount});
 
 class AnimatedScoreBox extends StatefulWidget {
-  const AnimatedScoreBox(this.point, this.score, this.hitCallback);
+  const AnimatedScoreBox({this.point, this.onScore, this.onHit});
 
   final int point;
-  final VoidCallback score;
-  final HitCallback hitCallback;
+  final VoidCallback onScore;
+  final HitCallback onHit;
 
   @override
   _AnimatedScoreBoxState createState() => _AnimatedScoreBoxState();
@@ -105,10 +105,10 @@ class _AnimatedScoreBoxState extends State<AnimatedScoreBox>
           setState(() {
             hits++;
             if (hits >= 4) {
-              widget.score();
+              widget.onScore();
             } else {
               startAnimation(hits);
-              widget.hitCallback(point: widget.point, hitCount: hits);
+              widget.onHit(point: widget.point, hitCount: hits);
             }
           });
         },
