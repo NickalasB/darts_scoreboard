@@ -1,7 +1,14 @@
+import 'package:darts_scoreboard/models/game_data.dart';
 import 'package:darts_scoreboard/ui/score_column.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+      ChangeNotifierProvider(
+        create: (context) => GameData(),
+        child: MyApp(),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   @override
@@ -28,14 +35,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int numberOfPlayers = 2;
-
   @override
   Widget build(BuildContext context) {
-    List playerColumns(int playerCount) => List<Widget>.generate(
-          playerCount,
-          (i) => Expanded(child: ScoreColumn(playerNumber: i)),
-        );
+    final gameData = GameData.of(context);
+    if (gameData.weHaveAWinner) {
+      print('winner');
+    }
 
     return Scaffold(
       backgroundColor: Colors.grey,
@@ -46,7 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: playerColumns(numberOfPlayers),
+                children: gameData.players
+                    .map((p) => Expanded(child: ScoreColumn(player: p)))
+                    .toList(),
               ),
             ),
             Row(
@@ -54,9 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                     child: CricketButton(
                   label: 'ADD PLAYER',
-                  onClick: numberOfPlayers < 4
+                  onClick: gameData.players.length < 4
                       ? () {
-                          setState(() => numberOfPlayers++);
+                          gameData.add(Player(
+                              name: 'Player ${gameData.players.length + 1}'));
                         }
                       : null,
                 )),
@@ -68,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: CricketButton(
                     label: 'RESET',
-                    onClick: () => setState(() => numberOfPlayers = 2),
+                    onClick: () => gameData.removeAll(),
                   ),
                 ),
               ],

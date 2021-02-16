@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class PlayerName extends StatelessWidget {
-  const PlayerName(this.playerNumber);
+  const PlayerName(this.playerName);
 
-  final int playerNumber;
+  final String playerName;
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
@@ -15,7 +15,7 @@ class PlayerName extends StatelessWidget {
       child: TextField(
         textAlign: TextAlign.center,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
-        decoration: InputDecoration(hintText: 'Player $playerNumber'),
+        decoration: InputDecoration(hintText: playerName),
       ),
     );
   }
