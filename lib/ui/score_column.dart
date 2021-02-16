@@ -48,17 +48,39 @@ class _ScoreColumnState extends State<ScoreColumn> {
   }
 
   void updateScore(int point) {
-    final newScore = widget.player.score + point;
-    setState(() => widget.player.setScore(newScore));
+    final gameData = GameData.of(context, listen: false);
+
+    final playersWhoHaveClosedThisPoint = gameData.players.where((element) {
+      return element.hitMap[point] == 3;
+    });
+
+    final canScore = playersWhoHaveClosedThisPoint.contains(widget.player) &&
+        playersWhoHaveClosedThisPoint.length != gameData.players.length;
+
+    if (canScore && !gameData.weHaveAWinner) {
+      final newScore = widget.player.score + point;
+      setState(() => widget.player.setScore(newScore));
+    }
   }
 
   void updateHits({@required int point, @required int hits}) {
+    final gameData = GameData.of(context, listen: false);
+
     widget.player.setHits(point: point, hits: hits);
 
-    if (cricketPoints
+    final doesHaveEveryPointClosed = cricketPoints
             .every((point) => widget.player.hitMap.containsKey(point)) &&
-        widget.player.hitMap.values.every((hitCount) => hitCount == 3)) {
-      GameData.of(context, listen: false).gameOver();
+        widget.player.hitMap.values.every((hitCount) => hitCount == 3);
+
+    final doesHaveHighScore = gameData.players
+        .where((p) => p != widget.player)
+        .map((e) => e.score)
+        .every((s) => widget.player.score >= s);
+
+    final gameIsOver = doesHaveEveryPointClosed && doesHaveHighScore;
+
+    if (gameIsOver) {
+      gameData.gameOver();
     }
   }
 }
