@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:darts_scoreboard/models/game_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -55,30 +56,37 @@ class _AnimatedScoreBoxState extends State<AnimatedScoreBox>
     controller2 = AnimationController(duration: animationDuration, vsync: this);
     controller3 = AnimationController(duration: animationDuration, vsync: this);
 
-    animation1 = lineTween.animate(controller1)
-      ..addListener(() {
-        setState(() {
-          _progress = animation1.value;
-        });
-      });
+    animation1 = lineTween.animate(controller1)..addListener(setProgress1);
 
-    animation2 = lineTween.animate(controller2)
-      ..addListener(() {
-        setState(() {
-          _progress2 = animation2.value;
-        });
-      });
+    animation2 = lineTween.animate(controller2)..addListener(setProgress2);
 
-    animation3 = circleTween.animate(controller3)
-      ..addListener(() {
-        setState(() {
-          _progress3 = animation3.value;
-        });
-      });
+    animation3 = circleTween.animate(controller3)..addListener(setProgress3);
+  }
+
+  void setProgress1() {
+    setState(() {
+      _progress = animation1.value;
+    });
+  }
+
+  void setProgress2() {
+    setState(() {
+      _progress2 = animation2.value;
+    });
+  }
+
+  void setProgress3() {
+    setState(() {
+      _progress3 = animation3.value;
+    });
   }
 
   @override
   void dispose() {
+    animation1.removeListener(setProgress1);
+    animation2.removeListener(setProgress2);
+    animation3.removeListener(setProgress3);
+
     controller1.dispose();
     controller2.dispose();
     controller3.dispose();
@@ -102,15 +110,17 @@ class _AnimatedScoreBoxState extends State<AnimatedScoreBox>
     return Expanded(
       child: InkWell(
         onTap: () {
-          setState(() {
-            hits++;
-            if (hits >= 4) {
-              widget.onScore();
-            } else {
-              startAnimation(hits);
-              widget.onHit(point: widget.point, hitCount: hits);
-            }
-          });
+          if (!GameData.of(context, listen: false).weHaveAWinner) {
+            setState(() {
+              hits++;
+              if (hits >= 4) {
+                widget.onScore();
+              } else {
+                startAnimation(hits);
+                widget.onHit(point: widget.point, hitCount: hits);
+              }
+            });
+          }
         },
         child: CustomPaint(
           painter: CricketPointPainter(
