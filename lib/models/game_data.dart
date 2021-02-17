@@ -22,7 +22,8 @@ class GameData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeAll() {
+  void resetGame() {
+    _weHaveAWinner = false;
     _players.clear();
     _players.addAll(List<Player>.generate(2, (i) => Player(name: 'Player $i')));
     notifyListeners();

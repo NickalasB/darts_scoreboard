@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: CricketButton(
                     label: 'RESET',
-                    onClick: () => gameData.removeAll(),
+                    onClick: () => gameData.resetGame(),
                   ),
                 ),
               ],
