@@ -44,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       backgroundColor: Colors.grey,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
