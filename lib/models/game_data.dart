@@ -25,7 +25,8 @@ class GameData extends ChangeNotifier {
   void resetGame() {
     _weHaveAWinner = false;
     _players.clear();
-    _players.addAll(List<Player>.generate(2, (i) => Player(name: 'Player $i')));
+    // TODO(me): Add this back once canvas reset issue is figured out
+    // _players.addAll(List<Player>.generate(2, (i) => Player(name: 'Player $i')));
     notifyListeners();
   }
 
